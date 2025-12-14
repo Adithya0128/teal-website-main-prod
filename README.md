@@ -1,36 +1,141 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TextEnhancer Website
 
-## Getting Started
+A modern, pixel-perfect website for TextEnhancer - an AI-powered text enhancement platform that transforms your writing into professional, casual, or summarized formats across all desktop applications.
 
-First, run the development server:
+## 🚀 Features
 
+- **Modern Design**: Clean, minimalist design inspired by Wispr Flow
+- **Smooth Animations**: Framer Motion powered animations and transitions
+- **Responsive**: Fully responsive design for all devices
+- **Type-Safe**: Built with TypeScript
+- **Performance**: Optimized with Next.js 16 and static generation
+- **Accessible**: Semantic HTML and ARIA labels
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **Animations**: Framer Motion
+- **Fonts**: Inter (sans-serif), Playfair Display (serif)
+
+## 📦 Installation
+
+1. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Run the development server:
+```bash
+npm run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🏗️ Project Structure
 
-## Learn More
+```
+text-enhancer/
+├── app/
+│   ├── layout.tsx          # Root layout with fonts
+│   ├── page.tsx            # Home page
+│   └── globals.css         # Global styles
+├── components/
+│   ├── Header.tsx          # Navigation header
+│   ├── Hero.tsx            # Hero section
+│   ├── Features.tsx        # Features section
+│   ├── CircularText.tsx    # Animated circular text
+│   └── Footer.tsx          # Footer component
+├── lib/
+│   ├── constants.ts        # Site constants and data
+│   └── animations.ts       # Framer Motion animation variants
+└── public/                 # Static assets
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 🎨 Design System
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Colors
+- **Primary**: Purple (#9333ea, #a855f7)
+- **Background**: White (#ffffff)
+- **Text**: Gray scale (#171717 to #9ca3af)
+- **Accent**: Dark Green (#1a4d3a) for announcement bar
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Typography
+- **Headlines**: Playfair Display (serif)
+- **Body**: Inter (sans-serif)
 
-## Deploy on Vercel
+### Spacing
+- Consistent spacing scale using Tailwind's default spacing system
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🎬 Animations
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The website includes:
+- **Fade-in animations** on scroll
+- **Stagger animations** for lists
+- **Hover effects** on interactive elements
+- **Circular text rotation** animation
+- **Smooth page transitions**
+
+## 📱 Responsive Breakpoints
+
+- Mobile: < 640px
+- Tablet: 640px - 1024px
+- Desktop: > 1024px
+
+## 🚀 Deployment
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+### Deploy to Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Import your repository in Vercel
+3. Vercel will automatically detect Next.js and deploy
+
+### Static Export (Optional)
+
+To export as a fully static site, update `next.config.ts`:
+
+```typescript
+const nextConfig = {
+  output: 'export',
+};
+```
+
+Then run:
+```bash
+npm run build
+```
+
+The static files will be in the `out` directory.
+
+## 🔧 Customization
+
+### Update Content
+
+Edit `lib/constants.ts` to update:
+- Site name and tagline
+- Navigation items
+- Features list
+- Circular text words
+
+### Modify Animations
+
+Edit `lib/animations.ts` to customize animation variants.
+
+### Change Colors
+
+Update Tailwind classes in components or modify `globals.css` for global color changes.
+
+## 📝 License
+
+This project is private and proprietary.
+
+## 🤝 Contributing
+
+This is a private project. For questions or suggestions, please contact the project owner.
