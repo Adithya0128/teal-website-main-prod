@@ -46,3 +46,11 @@ export const CIRCULAR_TEXT = [
   "optimize",
 ];
 
+// GitHub API Configuration
+export const GITHUB_REPO_API = "https://api.github.com/repos/Adithya0128/aitea/releases/latest";
+
+// Fallback static download URL
+// Format: https://github.com/OWNER/REPO/releases/download/TAG/FILENAME
+// Update the tag and filename below if the API fails
+export const FALLBACK_DOWNLOAD_URL = "https://github.com/Adithya0128/aitea/releases/download/v1.0.0/Teal.ai-1.0.0-arm64.dmg";
+

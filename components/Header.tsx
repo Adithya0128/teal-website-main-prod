@@ -1,15 +1,74 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { NAV_ITEMS } from "@/lib/constants";
+import { ApiResponse } from "@/lib/types";
+
+const CACHE_KEY = "tealai_latest_release";
+const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const [downloadState, setDownloadState] = useState<{
+    loading: boolean;
+    url: string | null;
+  }>({ loading: true, url: null });
+
+  // Fetch latest release on component mount
+  useEffect(() => {
+    const fetchDownloadUrl = async () => {
+      // Check sessionStorage cache first
+      try {
+        const cached = sessionStorage.getItem(CACHE_KEY);
+        if (cached) {
+          const { data, timestamp } = JSON.parse(cached);
+          const now = Date.now();
+          if (now - timestamp < CACHE_DURATION && data.success) {
+            setDownloadState({ loading: false, url: data.url });
+            return;
+          }
+        }
+      } catch (error) {
+        console.error("Error reading cache:", error);
+      }
+
+      // Fetch from API
+      try {
+        const response = await fetch("/api/releases/latest");
+        const data: ApiResponse = await response.json();
+
+        if (data.success) {
+          // Update cache
+          try {
+            sessionStorage.setItem(
+              CACHE_KEY,
+              JSON.stringify({
+                data,
+                timestamp: Date.now(),
+              })
+            );
+          } catch (error) {
+            console.error("Error writing cache:", error);
+          }
+
+          setDownloadState({ loading: false, url: data.url });
+        } else {
+          // Should not happen as API route always returns success with fallback
+          setDownloadState({ loading: false, url: null });
+        }
+      } catch (error) {
+        console.error("Error fetching download URL:", error);
+        setDownloadState({ loading: false, url: null });
+      }
+    };
+
+    fetchDownloadUrl();
+  }, []);
 
   const handleNavClick = (href: string, e: React.MouseEvent<HTMLAnchorElement>) => {
     if (href.startsWith("#")) {
@@ -74,20 +133,65 @@ export default function Header() {
 
           {/* Download Button & Menu */}
           <div className="flex items-center space-x-4">
-            <motion.button
-              className="hidden md:flex items-center space-x-2 px-4 py-2 bg-purple-100 border border-purple-300 rounded-lg text-purple-700 font-medium text-sm hover:bg-purple-200 transition-colors"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <svg
-                className="w-4 h-4"
-                fill="currentColor"
-                viewBox="0 0 20 20"
+            {downloadState.loading ? (
+              <motion.button
+                className="hidden md:flex items-center space-x-2 px-4 py-2 bg-purple-100 border border-purple-300 rounded-lg text-purple-700 font-medium text-sm opacity-75 cursor-not-allowed"
+                disabled
               >
-                <path d="M10 2L3 7v11h4v-6h6v6h4V7l-7-5z" />
-              </svg>
-              <span>Download for macOS</span>
-            </motion.button>
+                <svg
+                  className="w-4 h-4 animate-spin"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
+                </svg>
+                <span>Loading download...</span>
+              </motion.button>
+            ) : downloadState.url ? (
+              <motion.a
+                href={downloadState.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden md:flex items-center space-x-2 px-4 py-2 bg-purple-100 border border-purple-300 rounded-lg text-purple-700 font-medium text-sm hover:bg-purple-200 transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M10 2L3 7v11h4v-6h6v6h4V7l-7-5z" />
+                </svg>
+                <span>Download for macOS</span>
+              </motion.a>
+            ) : (
+              <motion.button
+                className="hidden md:flex items-center space-x-2 px-4 py-2 bg-purple-100 border border-purple-300 rounded-lg text-purple-700 font-medium text-sm opacity-75 cursor-not-allowed"
+                disabled
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M10 2L3 7v11h4v-6h6v6h4V7l-7-5z" />
+                </svg>
+                <span>Download unavailable</span>
+              </motion.button>
+            )}
 
             {/* Mobile Menu Button */}
             <button
@@ -136,20 +240,65 @@ export default function Header() {
                     {item.name}
                   </Link>
                 ))}
-                <motion.button
-                  className="flex items-center space-x-2 px-4 py-2 bg-purple-100 border border-purple-300 rounded-lg text-purple-700 font-medium text-sm w-full"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <svg
-                    className="w-4 h-4"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
+                {downloadState.loading ? (
+                  <motion.button
+                    className="flex items-center space-x-2 px-4 py-2 bg-purple-100 border border-purple-300 rounded-lg text-purple-700 font-medium text-sm w-full opacity-75 cursor-not-allowed"
+                    disabled
                   >
-                    <path d="M10 2L3 7v11h4v-6h6v6h4V7l-7-5z" />
-                  </svg>
-                  <span>Download for macOS</span>
-                </motion.button>
+                    <svg
+                      className="w-4 h-4 animate-spin"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                    <span>Loading download...</span>
+                  </motion.button>
+                ) : downloadState.url ? (
+                  <motion.a
+                    href={downloadState.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-2 px-4 py-2 bg-purple-100 border border-purple-300 rounded-lg text-purple-700 font-medium text-sm w-full"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M10 2L3 7v11h4v-6h6v6h4V7l-7-5z" />
+                    </svg>
+                    <span>Download for macOS</span>
+                  </motion.a>
+                ) : (
+                  <motion.button
+                    className="flex items-center space-x-2 px-4 py-2 bg-purple-100 border border-purple-300 rounded-lg text-purple-700 font-medium text-sm w-full opacity-75 cursor-not-allowed"
+                    disabled
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M10 2L3 7v11h4v-6h6v6h4V7l-7-5z" />
+                    </svg>
+                    <span>Download unavailable</span>
+                  </motion.button>
+                )}
               </div>
             </motion.div>
           )}
