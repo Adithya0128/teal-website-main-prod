@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { CIRCULAR_TEXT } from "@/lib/constants";
 
 export default function CircularText() {
@@ -21,34 +22,54 @@ export default function CircularText() {
 
   return (
     <div className="absolute bottom-20 left-10 hidden lg:block pointer-events-none">
-      <motion.div
-        className="relative"
-        style={{ width: center * 2, height: center * 2 }}
-        animate={{ rotate: rotation }}
-        transition={{ duration: 0.016, ease: "linear", repeat: Infinity }}
-      >
-        {CIRCULAR_TEXT.map((text, index) => {
-          const angle = index * angleStep - Math.PI / 2;
-          const x = center + Math.cos(angle) * radius;
-          const y = center + Math.sin(angle) * radius;
-          const rotationAngle = (angle * 180) / Math.PI + 90;
+      <div className="relative" style={{ width: center * 2, height: center * 2 }}>
+        {/* Center Logo */}
+        <div 
+          className="absolute z-10 w-16 h-16 overflow-hidden rounded-full flex items-center justify-center"
+          style={{ 
+            left: "50%", 
+            top: "50%", 
+            transform: "translate(-50%, -50%)" 
+          }}
+        >
+          <Image
+            src="/i-beam.png"
+            alt="Teal.ai Logo"
+            width={64}
+            height={64}
+            className="w-16 h-16 object-contain opacity-80"
+          />
+        </div>
 
-          return (
-            <div
-              key={index}
-              className="absolute text-sm text-gray-400 font-sans whitespace-nowrap"
-              style={{
-                left: `${x}px`,
-                top: `${y}px`,
-                transform: `translate(-50%, -50%) rotate(${rotationAngle}deg)`,
-                transformOrigin: "center",
-              }}
-            >
-              {text}
-            </div>
-          );
-        })}
-      </motion.div>
+        {/* Rotating Text Container */}
+        <motion.div
+          className="w-full h-full relative"
+          animate={{ rotate: rotation }}
+          transition={{ duration: 0.016, ease: "linear", repeat: Infinity }}
+        >
+          {CIRCULAR_TEXT.map((text, index) => {
+            const angle = index * angleStep - Math.PI / 2;
+            const x = center + Math.cos(angle) * radius;
+            const y = center + Math.sin(angle) * radius;
+            const rotationAngle = (angle * 180) / Math.PI + 90;
+
+            return (
+              <div
+                key={index}
+                className="absolute text-sm text-gray-400 font-sans whitespace-nowrap"
+                style={{
+                  left: `${x}px`,
+                  top: `${y}px`,
+                  transform: `translate(-50%, -50%) rotate(${rotationAngle}deg)`,
+                  transformOrigin: "center",
+                }}
+              >
+                {text}
+              </div>
+            );
+          })}
+        </motion.div>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { fadeIn } from "@/lib/animations";
 
 export default function Footer() {
@@ -15,14 +16,14 @@ export default function Footer() {
           className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12"
         >
           <div>
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="flex space-x-1">
-                <div className="w-1 h-4 bg-purple-400 rounded"></div>
-                <div className="w-1 h-6 bg-purple-400 rounded"></div>
-                <div className="w-1 h-5 bg-purple-400 rounded"></div>
-                <div className="w-1 h-7 bg-purple-400 rounded"></div>
-              </div>
-              <span className="text-xl font-bold text-white">Enhancer</span>
+            <div className="flex items-center mb-4 overflow-hidden">
+              <Image
+                src="/logo.png"
+                alt="Teal.ai"
+                width={180}
+                height={60}
+                className="h-16 w-auto object-contain"
+              />
             </div>
             <p className="text-sm text-gray-400">
               Transform your text with AI-powered enhancement tools.
