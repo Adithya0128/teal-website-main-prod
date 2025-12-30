@@ -1,13 +1,18 @@
 "use client";
 
 import { AuthComponent } from "@/components/ui/sign-up";
-import { Gem } from "lucide-react";
+import Image from "next/image";
 import TubesCursor from "@/components/ui/tubes-cursor";
 
 // Custom logo matching the site's branding
 const CustomLogo = () => (
-  <div className="bg-purple-600 text-white rounded-md p-1.5">
-    <Gem className="h-4 w-4" />
+  <div className="relative w-8 h-8">
+    <Image
+      src="/logo-square.png"
+      alt="Teal.ai Logo"
+      fill
+      className="object-contain"
+    />
   </div>
 );
 

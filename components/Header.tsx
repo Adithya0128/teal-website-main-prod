@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { NAV_ITEMS } from "@/lib/constants";
 import { ApiResponse } from "@/lib/types";
@@ -98,22 +99,23 @@ export default function Header() {
   return (
     <header className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4">
       {/* Floating Navigation Bar */}
-      <nav className="max-w-7xl w-full bg-[#f5f5dc] backdrop-blur-md rounded-xl shadow-lg border border-gray-200/50">
+      <nav className="max-w-7xl w-full bg-[#E7F0ED] backdrop-blur-md rounded-xl shadow-lg border border-gray-200/50">
         <div className="flex items-center justify-between h-16 px-6">
           {/* Logo */}
           <Link href="/">
             <motion.div
-              className="flex items-center space-x-2 cursor-pointer"
+              className="flex items-center cursor-pointer overflow-hidden rounded-3xl"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-            <div className="flex space-x-1">
-              <div className="w-1 h-4 bg-purple-600 rounded"></div>
-              <div className="w-1 h-6 bg-purple-600 rounded"></div>
-              <div className="w-1 h-5 bg-purple-600 rounded"></div>
-              <div className="w-1 h-7 bg-purple-600 rounded"></div>
-            </div>
-              <span className="text-xl font-bold text-black">Enhancer</span>
+              <Image
+                src="/logo.png"
+                alt="Teal.ai"
+                width={180}
+                height={60}
+                className="h-16 w-auto object-contain"
+                priority
+              />
             </motion.div>
           </Link>
 
@@ -168,13 +170,13 @@ export default function Header() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <svg
-                  className="w-4 h-4"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10 2L3 7v11h4v-6h6v6h4V7l-7-5z" />
-                </svg>
+                <Image
+                  src="/Apple_logo_black.svg"
+                  alt="Apple logo"
+                  width={16}
+                  height={16}
+                  className="w-4 h-4 object-contain"
+                />
                 <span>Download for macOS</span>
               </motion.a>
             ) : (
@@ -182,13 +184,13 @@ export default function Header() {
                 className="hidden md:flex items-center space-x-2 px-4 py-2 bg-purple-100 border border-purple-300 rounded-lg text-purple-700 font-medium text-sm opacity-75 cursor-not-allowed"
                 disabled
               >
-                <svg
-                  className="w-4 h-4"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10 2L3 7v11h4v-6h6v6h4V7l-7-5z" />
-                </svg>
+                <Image
+                  src="/Apple_logo_black.svg"
+                  alt="Apple logo"
+                  width={16}
+                  height={16}
+                  className="w-4 h-4 object-contain"
+                />
                 <span>Download unavailable</span>
               </motion.button>
             )}
@@ -275,13 +277,13 @@ export default function Header() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <svg
-                      className="w-4 h-4"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M10 2L3 7v11h4v-6h6v6h4V7l-7-5z" />
-                    </svg>
+                    <Image
+                      src="/Apple_logo_black.svg"
+                      alt="Apple logo"
+                      width={16}
+                      height={16}
+                      className="w-4 h-4 object-contain"
+                    />
                     <span>Download for macOS</span>
                   </motion.a>
                 ) : (
@@ -289,13 +291,13 @@ export default function Header() {
                     className="flex items-center space-x-2 px-4 py-2 bg-purple-100 border border-purple-300 rounded-lg text-purple-700 font-medium text-sm w-full opacity-75 cursor-not-allowed"
                     disabled
                   >
-                    <svg
-                      className="w-4 h-4"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M10 2L3 7v11h4v-6h6v6h4V7l-7-5z" />
-                    </svg>
+                    <Image
+                      src="/Apple_logo_black.svg"
+                      alt="Apple logo"
+                      width={16}
+                      height={16}
+                      className="w-4 h-4 object-contain"
+                    />
                     <span>Download unavailable</span>
                   </motion.button>
                 )}
