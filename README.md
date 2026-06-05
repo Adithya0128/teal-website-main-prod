@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # TextEnhancer Website
 
 A modern, pixel-perfect website for TextEnhancer - an AI-powered text enhancement platform that transforms your writing into professional, casual, or summarized formats across all desktop applications.
@@ -139,3 +140,6 @@ This project is private and proprietary.
 ## 🤝 Contributing
 
 This is a private project. For questions or suggestions, please contact the project owner.
+=======
+# teal-website-main-prod
+>>>>>>> b576830158706cfc131ca3aa63853171c20e9320
